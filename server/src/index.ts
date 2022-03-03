@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import {connect, set} from 'mongoose';
+import {connect} from 'mongoose';
 import config from 'config';
 import postRoutes from './routes/posts';
 const app = express();
