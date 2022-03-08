@@ -1,13 +1,13 @@
 import { Schema, model } from 'mongoose';
 
-interface Ipost {
+export interface Ipost {
     title: string;
     message: string;
     creator: string;
     tags: string;
     selectedFile: string;
-    likeCount: number;
-    createdAt: Date;
+    likeCount?: number;
+    createdAt?: Date;
 }
 
 const postSchema = new Schema<Ipost>( {

@@ -6,10 +6,11 @@ import config from 'config';
 import postRoutes from './routes/posts';
 const app = express();
 
-app.use('/posts', postRoutes);
 app.use(bodyParser.json({limit: '30mb'}));
 app.use(bodyParser.urlencoded({limit: '30mb', extended: true}));
 app.use(cors());
+
+app.use('/posts', postRoutes);
 
 const PORT: number | any = process.env.PORT || 5000;
 connect(config.get('mongoURI'))
