@@ -1,13 +1,15 @@
-import React, {FC} from 'react';
+import React, { FC } from 'react';
 import useStyles from './styles';
-import {Paper, Typography, TextField, Button} from '@mui/material';
-import {Ipost} from '../../../../server/src/models/postMessage';
-import UploadFile from 'rc-upload';
+import { Paper, Typography, TextField, Button } from '@mui/material';
+import { Ipost } from '../../../../server/src/models/postMessage';
+import FileBase64 from 'react-file-base64';
 
 interface FormProps {
     handleSubmit: (e: React.FormEvent) => void,
     postData: Ipost,
-    handleInput: (e: any) => void
+    handleInput: (e: any) => void,
+    appendFile: (file: string) => void,
+    clearForm: () => void
 }
 
 const Form: FC<FormProps> = (props) => {
@@ -17,7 +19,7 @@ const Form: FC<FormProps> = (props) => {
     return (
         <Paper className={classes.paper}>
             <form autoComplete='off' noValidate className={`${classes.root} ${classes.form}`}
-                  onSubmit={props.handleSubmit}>
+                onSubmit={props.handleSubmit}>
                 <Typography variant='h6'>Create a Memory</Typography>
                 <TextField
                     variant='outlined'
@@ -52,22 +54,35 @@ const Form: FC<FormProps> = (props) => {
                     onChange={props.handleInput}
                 />
                 <div className={classes.fileInput}>
-                    <UploadFile name='selectedFile'>
+                    <FileBase64 multiple={false}
+                        type='file'
+                        onDone={({ base64 }: any) => props.appendFile(base64)}
+                    >
                         <Button>
                             Add Memory Image
                         </Button>
-                    </UploadFile>
+                    </FileBase64>
                 </div>
 
-                <Button variant='contained' color='primary' size='large' type='submit'
-                        fullWidth>
+                <Button
+                    variant='contained'
+                    color='primary'
+                    size='large'
+                    type='submit'
+                    fullWidth
+                >
                     Submit
                 </Button>
 
-                <Button variant='contained' color='secondary' size='small' fullWidth>
+                <Button
+                    variant='contained'
+                    color='secondary'
+                    size='small'
+                    fullWidth
+                    onClick={props.clearForm}
+                >
                     Clear
                 </Button>
-
 
             </form>
 
