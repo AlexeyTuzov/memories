@@ -7,15 +7,17 @@ import { createNewPost } from '../../redux/actions/posts';
 const FormWrap: FC = () => {
 
     const dispatch = useDispatch();
-
-    const [postData, setPostData] = useState<Ipost>({
+    const blankPost: Ipost = {
         creator: '',
         selectedFile: '',
         tags: '',
         message: '',
         title: ''
-    });
+    }
+
+    const [postData, setPostData] = useState<Ipost>(blankPost);
     const postFields: string[] = Object.keys(postData);
+    
     const handleSubmit = (e: React.FormEvent): void => {
         e.preventDefault();
         dispatch(createNewPost(postData));

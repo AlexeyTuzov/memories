@@ -58,9 +58,6 @@ const Form: FC<FormProps> = (props) => {
                         type='file'
                         onDone={({ base64 }: any) => props.appendFile(base64)}
                     >
-                        <Button>
-                            Add Memory Image
-                        </Button>
                     </FileBase64>
                 </div>
 
