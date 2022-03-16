@@ -12,7 +12,7 @@ const App: FC = () => {
 
     return (
         <Container maxWidth='lg'>
-            <AppBar className={`${classes.appBar} ${classes.root}`} position='static' color='inherit'>
+            <AppBar sx={{flexDirection: 'row'}} className={classes.appBar} position='static' color='inherit'>
                 <Typography className={classes.heading} variant='h2' align='center'>Memories</Typography>
                 <img className={classes.image} src={memories} alt='Memories' height='60' />
             </AppBar>

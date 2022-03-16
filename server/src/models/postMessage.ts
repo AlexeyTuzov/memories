@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 
 export interface Ipost {
+    _id?: any;
     title: string;
     message: string;
     creator: string;

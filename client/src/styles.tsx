@@ -1,12 +1,6 @@
 import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(() => ({
-    root: {
-        '& .MuiAppBar-root': {
-            display: 'flex',
-            flexDirection: 'row'
-        }
-    },
     appBar: {
         borderRadius: 15,
         margin: '30px 0',

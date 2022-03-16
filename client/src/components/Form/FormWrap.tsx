@@ -33,14 +33,7 @@ const FormWrap: FC = () => {
         setPostData({ ...postData, selectedFile: file });
     }
     const clearForm = () => {
-        setPostData({
-            ...postData,
-            creator: '',
-            selectedFile: '',
-            tags: '',
-            message: '',
-            title: ''
-        });
+        setPostData(blankPost);
     }
 
     return (
