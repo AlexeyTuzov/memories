@@ -50,7 +50,7 @@ const Form: FC<FormProps> = (props) => {
                     name='tags'
                     label='Tags'
                     fullWidth
-                    value={props.postData?.tags}
+                    value={props.postData?.tags.toString().replace(',', ' ')}
                     onChange={props.handleInput}
                 />
                 <div className={classes.fileInput}>

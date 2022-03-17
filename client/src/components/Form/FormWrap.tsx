@@ -10,24 +10,31 @@ const FormWrap: FC = () => {
     const blankPost: Ipost = {
         creator: '',
         selectedFile: '',
-        tags: '',
+        tags: [],
         message: '',
         title: ''
     }
 
     const [postData, setPostData] = useState<Ipost>(blankPost);
     const postFields: string[] = Object.keys(postData);
-    
+
     const handleSubmit = (e: React.FormEvent): void => {
         e.preventDefault();
+        setPostData({ ...postData });
         dispatch(createNewPost(postData));
     }
     const handleInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const input: string = e.target.value;
         const field: string | undefined = postFields.find(item => item === e.target.name);
         if (field) {
-            setPostData({ ...postData, [field]: input });
+            if (field === 'tags') {
+                setPostData({ ...postData, tags: input.split(' ') });
+            } else {
+                setPostData({ ...postData, [field]: input });
+            }
+
         }
+        console.log(postData.tags);
     }
     const appendFile = (file: string): void => {
         setPostData({ ...postData, selectedFile: file });
