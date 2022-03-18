@@ -28,7 +28,7 @@ const Post: FC<PostProps> = (props) => {
                 </Typography>
             </div>
             <div className={classes.overlay2}>
-                <Button className={classes.button} size='small'>
+                <Button sx={{color: 'whitesmoke'}} size='small'>
                     <MoreHoriz fontSize='inherit' />
                 </Button>
             </div>
