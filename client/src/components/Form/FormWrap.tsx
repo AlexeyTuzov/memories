@@ -1,8 +1,9 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Form from './Form';
 import { Ipost } from '../../../../server/src/models/postMessage';
 import { useDispatch } from 'react-redux';
-import { createNewPost } from '../../redux/actions/posts';
+import { createNewPost, updatePost } from '../../redux/actions/posts';
+import { useAppSelector } from '../../redux/redux-hooks';
 
 const FormWrap: FC = () => {
 
@@ -17,11 +18,25 @@ const FormWrap: FC = () => {
 
     const [postData, setPostData] = useState<Ipost>(blankPost);
     const postFields: string[] = Object.keys(postData);
+    const currentID: string = useAppSelector(state => state.currentID);
+    const selectedPost: Ipost | undefined = useAppSelector(
+        state => state.posts.find(post => post._id === currentID)
+    );
+
+    useEffect(() => {
+        if (selectedPost) {
+            setPostData(selectedPost);
+        }
+    }, [currentID]);
 
     const handleSubmit = (e: React.FormEvent): void => {
         e.preventDefault();
-        setPostData({ ...postData });
-        dispatch(createNewPost(postData));
+        if (currentID) {
+            dispatch(updatePost(postData, currentID));
+        } else {
+            dispatch(createNewPost(postData));
+        }
+
     }
     const handleInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const input: string = e.target.value;
@@ -34,7 +49,6 @@ const FormWrap: FC = () => {
             }
 
         }
-        console.log(postData.tags);
     }
     const appendFile = (file: string): void => {
         setPostData({ ...postData, selectedFile: file });
@@ -48,7 +62,8 @@ const FormWrap: FC = () => {
             postData={postData}
             handleInput={handleInput}
             appendFile={appendFile}
-            clearForm={clearForm} />
+            clearForm={clearForm}
+            currentID={currentID} />
     )
 }
 

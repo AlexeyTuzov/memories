@@ -2,9 +2,11 @@ import {combineReducers} from 'redux';
 import {configureStore} from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
 import posts from './reducers/posts';
+import currentID from './reducers/currentID';
 
 const reducers = combineReducers({
-    posts
+    posts,
+    currentID
 })
 
 const store = configureStore({

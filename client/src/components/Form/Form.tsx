@@ -9,7 +9,8 @@ interface FormProps {
     postData: Ipost,
     handleInput: (e: any) => void,
     appendFile: (file: string) => void,
-    clearForm: () => void
+    clearForm: () => void,
+    currentID: string
 }
 
 const Form: FC<FormProps> = (props) => {
@@ -18,9 +19,13 @@ const Form: FC<FormProps> = (props) => {
 
     return (
         <Paper className={classes.paper}>
-            <form autoComplete='off' noValidate className={`${classes.root} ${classes.form}`}
+            <form autoComplete='off'
+                noValidate
+                className={`${classes.root} ${classes.form}`}
                 onSubmit={props.handleSubmit}>
-                <Typography variant='h6'>Create a Memory</Typography>
+                <Typography variant='h6'>
+                    ${props.currentID ? `Editing ${props.postData.title}` : `Creating a memory`}
+                </Typography>
                 <TextField
                     variant='outlined'
                     name='creator'

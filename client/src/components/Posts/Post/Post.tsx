@@ -4,6 +4,8 @@ import moment from 'moment';
 import { Ipost } from '../../../../../server/src/models/postMessage';
 import { Card, CardActions, CardMedia, CardContent, Button, Typography } from '@mui/material';
 import { ThumbUpAlt, Delete, MoreHoriz } from '@mui/icons-material';
+import { useDispatch } from 'react-redux';
+import { updateCurrentID } from '../../../redux/actions/currentID';
 
 interface PostProps {
     post: Ipost
@@ -12,6 +14,12 @@ interface PostProps {
 const Post: FC<PostProps> = (props) => {
 
     const classes = useStyles();
+
+    const dispatch = useDispatch();
+    const updateID = (): void => {
+        dispatch(updateCurrentID(props.post._id));
+    }
+
     return (
         <Card className={classes.card}>
             <CardMedia
@@ -28,7 +36,9 @@ const Post: FC<PostProps> = (props) => {
                 </Typography>
             </div>
             <div className={classes.overlay2}>
-                <Button sx={{color: 'whitesmoke'}} size='small'>
+                <Button sx={{color: 'whitesmoke'}}
+                 size='small'
+                 onClick={updateID}>
                     <MoreHoriz fontSize='inherit' />
                 </Button>
             </div>
