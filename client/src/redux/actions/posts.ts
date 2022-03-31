@@ -27,7 +27,16 @@ export const updatePost = (post: Ipost) => async (dispatch: AppDispatch) => {
     try {
         const { data } = await api.updatePost(post);
         const updatedPost: Ipost = data;
-        dispatch({type: actionTypes.UPDATE_POST, payload: updatedPost});
+        dispatch({ type: actionTypes.UPDATE_POST, payload: updatedPost });
+    } catch (err: any) {
+        console.log(err);
+    }
+}
+
+export const deletePost = (_id: string) => async (dispatch: AppDispatch) => {
+    try {
+        await api.deletePost(_id);
+        dispatch({ type: actionTypes.DELETE_POST, payload: _id });
     } catch (err: any) {
         console.log(err);
     }

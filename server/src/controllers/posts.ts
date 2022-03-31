@@ -38,5 +38,19 @@ export const updatePost = async (req: Request, res: Response): Promise<void> => 
     } catch (err: any) {
         res.status(400).json({ message: `Cannot update post!', ${err.message}` });
     }
+}
 
+export const deletePost = async (req: Request, res: Response): Promise<void> => {
+    const _id: any = req.body._id;
+
+    if (!mongoose.isValidObjectId(_id)) {
+        res.status(404).json({ message: 'invalid post ID!' });
+    }
+
+    try {
+        await PostMessage.findByIdAndRemove(_id);
+        res.status(200).json({ message: 'Post successfully deleted!'});
+    } catch (err: any) {
+        res.status(400).json({ message: `Cannot delete post!, ${err.message}`});
+    }
 }

@@ -16,6 +16,10 @@ export default (posts: Ipost[] = [], action: AnyAction): Ipost[] => {
             const updatedPost: Ipost = action.payload;
             return posts.map( post => post._id === updatedPost._id ? updatedPost : post);
 
+        case actionTypes.DELETE_POST:
+            const _id: string = action.payload;
+            return posts.filter( post => post._id !== _id);
+            
         default:
             return posts;
     }
