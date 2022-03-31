@@ -14,7 +14,7 @@ export default (posts: Ipost[] = [], action: AnyAction): Ipost[] => {
 
         case actionTypes.UPDATE_POST:
             const updatedPost: Ipost = action.payload;
-            return posts.map( post => post._id === action.payload._id ? action.payload : post);
+            return posts.map( post => post._id === updatedPost._id ? updatedPost : post);
 
         default:
             return posts;

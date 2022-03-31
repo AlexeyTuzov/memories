@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import mongoose from 'mongoose';
+import mongoose, { ObjectId } from 'mongoose';
 import PostMessage from '../models/postMessage';
 import { Ipost } from '../models/postMessage';
 
@@ -25,18 +25,18 @@ export const createPost = async (req: Request, res: Response): Promise<void> => 
 
 export const updatePost = async (req: Request, res: Response): Promise<void> => {
     const post: Ipost = req.body;
-    const { _id } = req.params;
 
-    if (!mongoose.isValidObjectId(_id)) {
+    if (!mongoose.isValidObjectId(post._id)) {
         res.status(404).json({ message: 'invalid post ID!' });
         return;
     }
 
-    await PostMessage.findByIdAndUpdate(_id, post, { new: true }, (err: any, doc: Ipost) => {
-        if (err) {
-            res.status(404).json({ message: `Cannot find post with ID: ${_id}` });
-        } else {
-            res.status(200).json(doc);
-        }
-    });
+    try {
+        const updatedPost: Ipost = await PostMessage.findByIdAndUpdate(
+            post._id, post, { new: true });
+        res.json(updatedPost);
+    } catch (err: any) {
+        res.status(400).json({ message: `Cannot update post!', ${err.message}` });
+    }
+
 }

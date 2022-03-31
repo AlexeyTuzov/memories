@@ -3,6 +3,7 @@ import Form from './Form';
 import { Ipost } from '../../../../server/src/models/postMessage';
 import { useDispatch } from 'react-redux';
 import { createNewPost, updatePost } from '../../redux/actions/posts';
+import { updateCurrentID } from '../../redux/actions/currentID';
 import { useAppSelector } from '../../redux/redux-hooks';
 
 const FormWrap: FC = () => {
@@ -32,7 +33,7 @@ const FormWrap: FC = () => {
     const handleSubmit = (e: React.FormEvent): void => {
         e.preventDefault();
         if (currentID) {
-            dispatch(updatePost(postData, currentID));
+            dispatch(updatePost(postData));
         } else {
             dispatch(createNewPost(postData));
         }
@@ -55,6 +56,7 @@ const FormWrap: FC = () => {
     }
     const clearForm = () => {
         setPostData(blankPost);
+        dispatch(updateCurrentID(''));
     }
 
     return (

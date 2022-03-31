@@ -24,7 +24,7 @@ const Form: FC<FormProps> = (props) => {
                 className={`${classes.root} ${classes.form}`}
                 onSubmit={props.handleSubmit}>
                 <Typography variant='h6'>
-                    ${props.currentID ? `Editing ${props.postData.title}` : `Creating a memory`}
+                    {props.currentID ? `Editing ${props.postData.title}` : `Creating a memory`}
                 </Typography>
                 <TextField
                     variant='outlined'

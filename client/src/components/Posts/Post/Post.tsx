@@ -39,7 +39,7 @@ const Post: FC<PostProps> = (props) => {
                 <Button sx={{color: 'whitesmoke'}}
                  size='small'
                  onClick={updateID}>
-                    <MoreHoriz fontSize='inherit' />
+                    <MoreHoriz fontSize='medium' />
                 </Button>
             </div>
             <div className={classes.details}>
