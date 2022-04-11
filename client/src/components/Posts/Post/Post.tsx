@@ -6,7 +6,7 @@ import { Card, CardActions, CardMedia, CardContent, Button, Typography } from '@
 import { ThumbUpAlt, Delete, MoreHoriz } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 import { updateCurrentID } from '../../../redux/actions/currentID';
-import { deletePost } from '../../../redux/actions/posts';
+import { deletePost, likePost } from '../../../redux/actions/posts';
 
 interface PostProps {
     post: Ipost
@@ -22,6 +22,9 @@ const Post: FC<PostProps> = (props) => {
     }
     const deleteByID = (): void => {
             dispatch(deletePost(props.post._id));
+    }
+    const likeThePost = (): void => {
+        dispatch(likePost(props.post));
     }
 
     return (
@@ -60,7 +63,9 @@ const Post: FC<PostProps> = (props) => {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size='small' color='primary'>
+                <Button size='small'
+                 color='primary'
+                 onClick={likeThePost}>
                     <ThumbUpAlt fontSize='small' />
                     Like
                     {props.post.likeCount}

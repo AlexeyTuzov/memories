@@ -1,3 +1,4 @@
+import { json } from 'body-parser';
 import { Request, Response } from 'express';
 import mongoose, { ObjectId } from 'mongoose';
 import PostMessage from '../models/postMessage';
@@ -45,12 +46,30 @@ export const deletePost = async (req: Request, res: Response): Promise<void> => 
 
     if (!mongoose.isValidObjectId(_id)) {
         res.status(404).json({ message: 'invalid post ID!' });
+        return;
     }
 
     try {
         await PostMessage.findByIdAndRemove(_id);
-        res.status(200).json({ message: 'Post successfully deleted!'});
+        res.status(200).json({ message: 'Post successfully deleted!' });
     } catch (err: any) {
-        res.status(400).json({ message: `Cannot delete post!, ${err.message}`});
+        res.status(400).json({ message: `Cannot delete post!, ${err.message}` });
+    }
+}
+
+export const likePost = async (req: Request, res: Response): Promise<void> => {
+    const post: Ipost = req.body;
+
+    if (!mongoose.isValidObjectId(post._id)) {
+        res.status(404).json({ message: 'invalid post ID!' });
+        return;
+    }
+
+    try {
+        const updatedPost = await PostMessage.findByIdAndUpdate(
+            post._id, { ...post, likeCount: post.likeCount + 1 }, { new: true });
+        res.json(updatedPost);
+    } catch (err: any) {
+        res.status(400).json({ message: `Cannot update likes count!, ${err.message}` });
     }
 }
