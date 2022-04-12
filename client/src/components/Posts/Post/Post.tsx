@@ -62,18 +62,18 @@ const Post: FC<PostProps> = (props) => {
                     {props.post.message}
                 </Typography>
             </CardContent>
-            <CardActions>
+            <CardActions className={classes.cardActions}>
                 <Button size='small'
                  color='primary'
                  onClick={likeThePost}>
-                    <ThumbUpAlt fontSize='small' />
-                    Like
+                    <ThumbUpAlt fontSize='small' className={classes.relativePaddingTop} />
+                    &nbsp; Like &nbsp;
                     {props.post.likeCount}
                 </Button>
                 <Button size='small'
                  color='primary'
                  onClick={deleteByID}>
-                    <Delete fontSize='small' />
+                    <Delete fontSize='small' className={classes.relativePaddingTop} />
                     Delete
                 </Button>
             </CardActions>

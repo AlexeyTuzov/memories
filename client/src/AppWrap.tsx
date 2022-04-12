@@ -1,7 +1,7 @@
-import React, {FC, useEffect} from 'react';
+import React, { FC, useEffect } from 'react';
 import App from './App';
-import {useDispatch} from 'react-redux';
-import {getAllPosts} from './redux/actions/posts';
+import { useDispatch } from 'react-redux';
+import { getAllPosts } from './redux/actions/posts';
 
 const AppWrap: FC = () => {
 

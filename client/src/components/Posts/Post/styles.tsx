@@ -1,4 +1,5 @@
 import {makeStyles} from '@mui/styles';
+import { relative } from 'node:path/win32';
 
 const useStyles = makeStyles(() => ({
         media: {
@@ -48,6 +49,10 @@ const useStyles = makeStyles(() => ({
             padding: '0 16px 8px 16px',
             display: 'flex',
             justifyContent: 'space-between'
+        },
+        relativePaddingTop: {
+            position: 'relative',
+            bottom: '2px'
         }
     })
 );
