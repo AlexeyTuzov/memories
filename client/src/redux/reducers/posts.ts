@@ -13,7 +13,6 @@ export default (posts: Ipost[] = [], action: AnyAction): Ipost[] => {
             return [...posts, newPost];
 
         case actionTypes.UPDATE_POST:
-        case actionTypes.LIKE_POST:
             const updatedPost: Ipost = action.payload;
             return posts.map(post => post._id === updatedPost._id ? updatedPost : post);
 

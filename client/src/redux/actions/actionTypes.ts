@@ -3,8 +3,7 @@ enum actionTypes {
     CREATE_POST = 'CREATE POST',
     UPDATE_CURRENT_ID = 'UPDATE CURRENT ID',
     UPDATE_POST = 'UPDATE POST',
-    DELETE_POST = 'DELETE_POST',
-    LIKE_POST = 'LIKE_POST'
+    DELETE_POST = 'DELETE_POST'
 }
 
 export default actionTypes;
