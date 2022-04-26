@@ -8,7 +8,7 @@ const AppWrap: FC = () => {
 
     const dispatch = useDispatch();
 
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    //const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
     useEffect(() => {
         dispatch(getAllPosts());

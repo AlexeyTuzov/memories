@@ -1,4 +1,4 @@
-import * as api from '../../api';
+import * as api from '../../api/index';
 import { Ipost } from '../../../../server/src/models/postMessage';
 import actionTypes from './actionTypes';
 import { AppDispatch } from '../index';

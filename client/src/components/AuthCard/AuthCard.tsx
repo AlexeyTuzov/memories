@@ -1,5 +1,4 @@
 import { Box, Grid, Paper, Typography, Button, TextField } from '@mui/material';
-import { flexbox } from '@mui/system';
 import React, { FC } from 'react';
 
 const AuthCard: FC = () => {

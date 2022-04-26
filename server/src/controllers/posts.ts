@@ -1,6 +1,5 @@
-import { json } from 'body-parser';
 import { Request, Response } from 'express';
-import mongoose, { ObjectId } from 'mongoose';
+import mongoose from 'mongoose';
 import PostMessage from '../models/postMessage';
 import { Ipost } from '../models/postMessage';
 
