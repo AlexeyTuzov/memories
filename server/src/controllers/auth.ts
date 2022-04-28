@@ -3,6 +3,8 @@ import User from '../models/user';
 import { IUser } from '../models/user';
 import { body, ValidationError, validationResult, Result } from 'express-validator';
 import { compare } from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import config from 'config';
 
 export interface AuthInfo {
     userID: string;
@@ -17,7 +19,7 @@ export const logIn = async (req: Request, res: Response): Promise<void> => {
         body('userPasword').isLength({ min: 6 });
         const errors: Result<ValidationError> = validationResult(req);
         if (!errors.isEmpty()) {
-            res.status(400).json({ massage: `Invalid login data: ${errors}` });
+            res.status(400).json({ message: `Invalid login data: ${errors}` });
             return;
         }
 
@@ -29,15 +31,21 @@ export const logIn = async (req: Request, res: Response): Promise<void> => {
 
         const passwordMatch: boolean = await compare(userPassword, foundUser.userPassword);
         if (!passwordMatch) {
-            res.status(400).json({ massage: 'Password mismatch!' });
+            res.status(400).json({ message: 'Password mismatch!' });
             return;
         }
+
+        const token = jwt.sign(
+            {userID: foundUser._id},
+            config.get('jwtKey'),
+            {expiresIn: '1d'}
+        );
+
+        res.json({ userID: foundUser._id, userToken: token});
 
     } catch (err: any) {
         res.status(500).json({ message: `Server error: ${err}` });
     }
-
-
 }
 
 export const signUp = async (req: Request, res: Response): Promise<void> => {

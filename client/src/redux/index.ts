@@ -3,10 +3,12 @@ import {configureStore} from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
 import posts from './reducers/posts';
 import currentID from './reducers/currentID';
+import auth from './reducers/auth';
 
 const reducers = combineReducers({
     posts,
-    currentID
+    currentID,
+    auth
 })
 
 const store = configureStore({

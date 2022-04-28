@@ -7,6 +7,9 @@ export const LogIn = (userEmail: string, userPassword: string) => async (dispatc
     try {
         const { data } = await api.logIn(userEmail, userPassword);
         const authParams: AuthInfo = data;
+        localStorage.setItem('userID', authParams.userID);
+        localStorage.setItem('UserToken', authParams.userToken);
+        dispatch({ type: actionTypes.LOG_IN, payload: { userID: authParams.userID, userToken: authParams.userToken } });
     } catch (err: any) {
         console.log(err);
     }
