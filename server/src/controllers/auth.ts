@@ -23,7 +23,7 @@ export const logIn = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        const foundUser: IUser = await User.findOne({ userEmail });
+        const foundUser: IUser | null = await User.findOne({ userEmail });
         if (!foundUser) {
             res.status(400).json({ message: 'User with this Email is not registered yet!' });
             return;
@@ -59,7 +59,7 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
             res.status(400).json({ message: `Invalid registration data: ${errors}`});
         }
 
-        const foundUser: IUser = await User.findOne({ userEmail });
+        const foundUser: IUser | null = await User.findOne({ userEmail });
         if (foundUser) {
             res.status(400).json({ message: 'User with this Email is already registered!' });
             return;
