@@ -7,7 +7,7 @@ const AuthCard: FC = () => {
 			justifyContent: 'center'
 		}}
 		>
-			<Grid item xs={12} sm={4}>
+			<Grid item xs={12} sm={3}>
 				<Paper sx={{
 					minHeight: '30vh',
 					marginTop: '50%'
