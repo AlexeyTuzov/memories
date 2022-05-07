@@ -10,7 +10,8 @@ const useStyles = makeStyles(() => ({
             }
         },
         paper: {
-            padding: 5
+            padding: 5,
+            borderRadius: '15px'
         },
         form: {
             display: 'flex',

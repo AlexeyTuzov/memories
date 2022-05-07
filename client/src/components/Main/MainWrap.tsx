@@ -1,9 +1,9 @@
-import React, { FC, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { getAllPosts } from '../../redux/actions/posts';
-import { useAppSelector } from '../../redux/redux-hooks';
-import { AuthorizedUser } from '../../redux/reducers/auth';
+import React, {FC, useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {useDispatch} from 'react-redux';
+import {getAllPosts} from '../../redux/actions/posts';
+import {useAppSelector} from '../../redux/redux-hooks';
+import {AuthorizedUser} from '../../redux/reducers/auth';
 import actionTypes from '../../redux/actions/actionTypes';
 import Main from './Main';
 import AuthWrap from '../AuthCard/AuthWrap';
@@ -22,18 +22,22 @@ const MainWrap: FC = () => {
         let userID: string | null = localStorage.getItem('userID');
         let userToken: string | null = localStorage.getItem('userToken');
         if (userID && userToken) {
-            dispatch({ type: actionTypes.LOG_IN, payload: { userID, userToken } });
+            dispatch({type: actionTypes.LOG_IN, payload: {userID, userToken}});
         }
     }, []);
 
-    if (auth.isAuthenticated) {
-        navigate('/');
-    } else {
-        navigate('/auth');
-    }
+
+    useEffect(() => {
+        if (auth.isAuthenticated) {
+            navigate('/');
+        } else {
+            navigate('/auth');
+        }
+    }, []);
+
 
     return (
-        auth.isAuthenticated ? <Main /> : <AuthWrap />
+        <Main/>
     );
 }
 
