@@ -1,5 +1,5 @@
-import React, {FC} from 'react';
-import {AppBar, Container, Typography} from '@mui/material';
+import React, { FC } from 'react';
+import { AppBar, Container, Typography } from '@mui/material';
 import memories from '../../assets/memories.png';
 
 const Navbar: FC = () => {
@@ -16,11 +16,14 @@ const Navbar: FC = () => {
             }}
                     position='static'
                     color='inherit'>
-                <Typography sx={{color: 'rgba(0,183,255, 1)', marginRight: '15px'}}
+                <Typography sx={{
+                    color: 'rgba(0,183,255, 1)',
+                    marginRight: '15px'
+                }}
                             variant='h2'
-                            >Memories
+                >Memories
                 </Typography>
-                    <img src={memories} alt='Memories' height='60'/>
+                <img src={memories} alt='Memories' height='60'/>
 
             </AppBar>
         </Container>

@@ -61,11 +61,11 @@ const FormWrap: FC = () => {
 
     return (
         <Form handleSubmit={handleSubmit}
-            postData={postData}
-            handleInput={handleInput}
-            appendFile={appendFile}
-            clearForm={clearForm}
-            currentID={currentID} />
+              postData={postData}
+              handleInput={handleInput}
+              appendFile={appendFile}
+              clearForm={clearForm}
+              currentID={currentID}/>
     )
 }
 
