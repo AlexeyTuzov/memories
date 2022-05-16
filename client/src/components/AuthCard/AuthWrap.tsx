@@ -7,7 +7,8 @@ export enum userInputs {
     userEmail = 'userEmail',
     userPassword = 'userPassword',
     userFirstName = 'userFirstName',
-    userLastName = 'userLastName'
+    userLastName = 'userLastName',
+    userConfirmPassword = 'userConfirmPassword'
 }
 
 const AuthWrap: FC = () => {
@@ -22,6 +23,7 @@ const AuthWrap: FC = () => {
     }
 
     const [userData, setUserData] = useState<IUser>(blankUser);
+    const [confirmPassword, setConfirmPassword] = useState<string>('');
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -30,14 +32,20 @@ const AuthWrap: FC = () => {
     const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value: string = e.target.value;
         const fieldName = e.target.name;
-        setUserData({ ...userData, [fieldName]: value });
+        if (fieldName === 'userConfirmPassword') {
+            setConfirmPassword(value);
+        } else {
+            setUserData({ ...userData, [fieldName]: value });
+        }
+
     }
 
     return (
         <AuthCard
             handleSubmit={handleSubmit}
             handleInput={handleInput}
-            userData={userData}/>
+            userData={userData}
+            confirmPassword={confirmPassword} />
     );
 }
 

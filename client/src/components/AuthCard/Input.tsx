@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 import { TextField, Grid, InputAdornment, IconButton } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { userInputs } from './AuthWrap'
 
 interface InputProps {
     half?: boolean,
@@ -25,12 +26,12 @@ const Input: FC<InputProps> = (props) => {
                 name={props.name}
                 required
                 fullWidth
-                type={ props.type === 'password' && !isPasswordVisible ? 'text' : props.type }
+                type={ props.type === 'password' && isPasswordVisible ? 'text' : props.type }
                 label={props.label}
                 value={props.value}
                 onChange={props.handleInput}
                 InputProps={
-                    props.name === 'userPassword' ?
+                    props.name === userInputs.userPassword || props.name === userInputs.userConfirmPassword ?
                         {
                             endAdornment: (<InputAdornment position='end'>
                                 <IconButton onClick={handlePasswordVisibility}>
