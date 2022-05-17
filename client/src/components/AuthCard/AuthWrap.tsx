@@ -25,6 +25,13 @@ const AuthWrap: FC = () => {
     const [userData, setUserData] = useState<IUser>(blankUser);
     const [confirmPassword, setConfirmPassword] = useState<string>('');
 
+    const [isSignIn, setIsSignIn] = useState<boolean>(false);
+
+    const switchSignMode = () => {
+        setIsSignIn( (prevSignState) => !prevSignState);
+    }
+    
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
     }
@@ -45,7 +52,9 @@ const AuthWrap: FC = () => {
             handleSubmit={handleSubmit}
             handleInput={handleInput}
             userData={userData}
-            confirmPassword={confirmPassword} />
+            confirmPassword={confirmPassword}
+            isSignIn={isSignIn}
+            switchSignMode={switchSignMode} />
     );
 }
 
