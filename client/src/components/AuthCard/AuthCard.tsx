@@ -1,9 +1,11 @@
 import { Box, Grid, Paper, Button, Avatar, Container } from '@mui/material';
-import { LockOutlined } from '@mui/icons-material';
-import React, { FC, SetStateAction, useState } from 'react';
+import { LockOutlined} from '@mui/icons-material';
+import React, { FC } from 'react';
 import { IUser } from '../../../../server/src/models/user';
 import Input from './Input';
 import { userInputs } from './AuthWrap';
+import GoogleAuth from './GoogleAuth';
+
 
 interface AuthCardProps {
     handleSubmit: (e: React.FormEvent) => void;
@@ -85,6 +87,11 @@ const AuthCard: FC<AuthCardProps> = (props) => {
                                 Submit
                             </Button>
                         </Grid>
+                        
+                        <Grid item xs={12}>
+                            <GoogleAuth />
+                        </Grid>
+
                         <Grid container justifyContent='flex-end' margin='5px'>
                             <Grid item>
                                 <Button onClick={props.switchSignMode}>

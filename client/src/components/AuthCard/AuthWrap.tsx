@@ -28,9 +28,9 @@ const AuthWrap: FC = () => {
     const [isSignIn, setIsSignIn] = useState<boolean>(false);
 
     const switchSignMode = () => {
-        setIsSignIn( (prevSignState) => !prevSignState);
+        setIsSignIn((prevSignState) => !prevSignState);
     }
-    
+
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
