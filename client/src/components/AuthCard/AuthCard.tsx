@@ -4,8 +4,6 @@ import React, { FC } from 'react';
 import { IUser } from '../../../../server/src/models/user';
 import Input from './Input';
 import { userInputs } from './AuthWrap';
-import GoogleAuth from './GoogleAuth';
-
 
 interface AuthCardProps {
     handleSubmit: (e: React.FormEvent) => void;
@@ -86,10 +84,6 @@ const AuthCard: FC<AuthCardProps> = (props) => {
                             <Button fullWidth color='primary' type='submit' variant='contained'>
                                 Submit
                             </Button>
-                        </Grid>
-                        
-                        <Grid item xs={12}>
-                            <GoogleAuth />
                         </Grid>
 
                         <Grid container justifyContent='flex-end' margin='5px'>

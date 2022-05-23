@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import AuthCard from './AuthCard';
 import { IUser } from '../../../../server/src/models/user';
 import { useDispatch } from 'react-redux';
+import validateForm from './ValidateForm';
 
 export enum userInputs {
     userEmail = 'userEmail',
@@ -34,6 +35,7 @@ const AuthWrap: FC = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        console.log(validateForm({...userData, confirmPassword}, isSignIn));
     }
 
     const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
