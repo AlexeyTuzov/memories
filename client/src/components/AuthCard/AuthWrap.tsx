@@ -3,6 +3,7 @@ import AuthCard from './AuthCard';
 import { IUser } from '../../../../server/src/models/user';
 import { useDispatch } from 'react-redux';
 import validateForm from './ValidateForm';
+import MessagePopup from './MessagePopup';
 
 export enum userInputs {
     userEmail = 'userEmail',
@@ -25,6 +26,8 @@ const AuthWrap: FC = () => {
 
     const [userData, setUserData] = useState<IUser>(blankUser);
     const [confirmPassword, setConfirmPassword] = useState<string>('');
+    const [isPopupShown, setIsPopupShown] = useState<boolean>(false);
+    const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
     const [isSignIn, setIsSignIn] = useState<boolean>(false);
 
@@ -32,10 +35,13 @@ const AuthWrap: FC = () => {
         setIsSignIn((prevSignState) => !prevSignState);
     }
 
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(validateForm({...userData, confirmPassword}, isSignIn));
+        setValidationErrors(validateForm({...userData, confirmPassword}, isSignIn));
+        if (validationErrors.length > 0) {
+            setIsPopupShown(true);
+        }
+        console.log('validation Errors:', validationErrors);
     }
 
     const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,13 +56,17 @@ const AuthWrap: FC = () => {
     }
 
     return (
-        <AuthCard
-            handleSubmit={handleSubmit}
-            handleInput={handleInput}
-            userData={userData}
-            confirmPassword={confirmPassword}
-            isSignIn={isSignIn}
-            switchSignMode={switchSignMode} />
+        <>
+            <MessagePopup errors={validationErrors} isPopupShown={isPopupShown} />
+            <AuthCard
+                handleSubmit={handleSubmit}
+                handleInput={handleInput}
+                userData={userData}
+                confirmPassword={confirmPassword}
+                isSignIn={isSignIn}
+                switchSignMode={switchSignMode} />
+        </>
+
     );
 }
 

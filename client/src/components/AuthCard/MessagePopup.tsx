@@ -1,8 +1,20 @@
-import React, { FC } from "react";
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from "@mui/material";
-
-import Slide from '@mui/material/Slide';
+import React, { FC, useState, useEffect } from 'react';
+import {
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions,
+    Button,
+    Slide,
+    Typography
+} from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
+
+interface MessageProps {
+    errors: string[];
+    isPopupShown: boolean;
+}
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {
@@ -10,24 +22,23 @@ const Transition = React.forwardRef(function Transition(
     },
     ref: React.Ref<unknown>,
 ) {
-    return <Slide direction="up" ref={ref} {...props} />;
+    return <Slide direction="up" ref={ref} children={props.children} />;
 });
-
-interface MessageProps {
-    message: string;
-}
 
 const MessagePopup: FC<MessageProps> = (props) => {
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState<boolean>(false);
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
+    useEffect(() => {
+        if (props.isPopupShown) {
+            setOpen(true);
+        }
+    }, [props.isPopupShown]);
 
     const handleClose = () => {
         setOpen(false);
     };
+
 
     return (
         <div>
@@ -41,7 +52,7 @@ const MessagePopup: FC<MessageProps> = (props) => {
                 <DialogTitle>Input incorrect!</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-slide-description">
-                        {props.message}
+                        {props.errors}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

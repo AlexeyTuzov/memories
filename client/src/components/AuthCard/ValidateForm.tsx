@@ -1,21 +1,18 @@
-import React from "react";
 import { IUser } from '../../../../server/src/models/user';
 
 interface IAuthForm extends IUser {
     confirmPassword: string;
 }
 
-const validateForm = (form: IAuthForm, isSignIn: boolean): boolean => {
-    let errorMessage: string = '';
+const validateForm = (form: IAuthForm, isSignIn: boolean): string[] => {
+    let errorsArray: string[] = [];
 
-    if (!(form.userPassword === form.confirmPassword) && !isSignIn) errorMessage = 'Password confirmation mismatch!';
-    if (!form.userPassword) errorMessage = 'No password is specified!';
-    if (!form.userEmail) errorMessage = 'No Email is specified!';
-    if (!form.userFirstName && !isSignIn) errorMessage = 'No user First Name is specified!';
+    if (!form.userFirstName && !isSignIn) errorsArray.push('No user First Name is specified!');
+    if (!form.userEmail) errorsArray.push('No Email is specified!');
+    if (!form.userPassword) errorsArray.push('No password is specified!');
+    if (!(form.userPassword === form.confirmPassword) && !isSignIn) errorsArray.push('Password confirmation mismatch!');
 
-    // instead a console.log here will be the call of error popup
-    if (errorMessage) console.log(errorMessage);
-    return !errorMessage;
+    return errorsArray;
 }
 
 export default validateForm;
