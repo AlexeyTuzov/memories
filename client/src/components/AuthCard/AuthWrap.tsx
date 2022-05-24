@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import AuthCard from './AuthCard';
 import { IUser } from '../../../../server/src/models/user';
 import { useDispatch } from 'react-redux';
@@ -35,13 +35,21 @@ const AuthWrap: FC = () => {
         setIsSignIn((prevSignState) => !prevSignState);
     }
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        setValidationErrors(validateForm({...userData, confirmPassword}, isSignIn));
+    const setPopupHidden = () => {
+        setIsPopupShown(false);
+    }
+
+    useEffect( () => {
         if (validationErrors.length > 0) {
             setIsPopupShown(true);
         }
-        console.log('validation Errors:', validationErrors);
+    }, [validationErrors]);
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        const errorsArray: string[] = validateForm({...userData, confirmPassword}, isSignIn);
+        setValidationErrors(errorsArray);
+        
     }
 
     const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,12 +60,11 @@ const AuthWrap: FC = () => {
         } else {
             setUserData({ ...userData, [fieldName]: value });
         }
-
     }
 
     return (
         <>
-            <MessagePopup errors={validationErrors} isPopupShown={isPopupShown} />
+            <MessagePopup errors={validationErrors} isPopupShown={isPopupShown} setPopupHidden={setPopupHidden} />
             <AuthCard
                 handleSubmit={handleSubmit}
                 handleInput={handleInput}

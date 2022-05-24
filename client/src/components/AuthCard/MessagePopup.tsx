@@ -14,6 +14,7 @@ import { TransitionProps } from '@mui/material/transitions';
 interface MessageProps {
     errors: string[];
     isPopupShown: boolean;
+    setPopupHidden: () => void;
 }
 
 const Transition = React.forwardRef(function Transition(
@@ -22,7 +23,7 @@ const Transition = React.forwardRef(function Transition(
     },
     ref: React.Ref<unknown>,
 ) {
-    return <Slide direction="up" ref={ref} children={props.children} />;
+    return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const MessagePopup: FC<MessageProps> = (props) => {
@@ -37,6 +38,7 @@ const MessagePopup: FC<MessageProps> = (props) => {
 
     const handleClose = () => {
         setOpen(false);
+        props.setPopupHidden();
     };
 
 
@@ -47,13 +49,12 @@ const MessagePopup: FC<MessageProps> = (props) => {
                 TransitionComponent={Transition}
                 keepMounted
                 onClose={handleClose}
-                aria-describedby="alert-dialog-slide-description"
+
             >
                 <DialogTitle>Input incorrect!</DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-slide-description">
-                        {props.errors}
-                    </DialogContentText>
+                    {props.errors.map(item =>
+                        <DialogContentText key={item}>{item}</DialogContentText>)}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>OK</Button>
