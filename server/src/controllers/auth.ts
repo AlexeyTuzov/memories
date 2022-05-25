@@ -31,7 +31,7 @@ export const logIn = async (req: Request, res: Response): Promise<void> => {
 
         const passwordMatch: boolean = await compare(userPassword, foundUser.userPassword);
         if (!passwordMatch) {
-            res.status(400).json({ message: 'Password mismatch!' });
+            res.status(400).json({ message: 'Wrong password!' });
             return;
         }
 
@@ -49,14 +49,14 @@ export const logIn = async (req: Request, res: Response): Promise<void> => {
 }
 
 export const signUp = async (req: Request, res: Response): Promise<void> => {
-    const { userEmail, userPasword } = req.body;
+    const { userEmail, userPassword, userFirstName, userLastName } = req.body;
 
     try {
         body('userEmail').isEmail().normalizeEmail();
         body('userPassword').isLength({ min: 6 });
         const errors: Result<ValidationError> = validationResult(req);
         if (!errors.isEmpty()) {
-            res.status(400).json({ message: `Invalid registration data: ${errors}`});
+            res.status(400).json({ message: `Invalid registration data: ${errors}` });
         }
 
         const foundUser: IUser | null = await User.findOne({ userEmail });
@@ -65,12 +65,12 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        const encryptedPassword = hash(userPasword, 10);
+        const encryptedPassword = hash(userPassword, 10);
 
-        const newUser = new User({ userEmail, userPassword: encryptedPassword});
+        const newUser = new User({ userEmail, userPassword: encryptedPassword, userFirstName, userLastName });
         await newUser.save();
 
-        res.json({ message: 'User successfully created!'});
+        res.json({ message: 'User successfully created!' });
     }
     catch (err: any) {
         res.status(500).json({ message: `Server error: ${err}` });

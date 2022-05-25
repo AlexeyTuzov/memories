@@ -6,13 +6,12 @@ import {
     DialogContentText,
     DialogActions,
     Button,
-    Slide,
-    Typography
+    Slide
 } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
 
 interface MessageProps {
-    errors: string[];
+    messages: string[];
     isPopupShown: boolean;
     setPopupHidden: () => void;
 }
@@ -41,7 +40,6 @@ const MessagePopup: FC<MessageProps> = (props) => {
         props.setPopupHidden();
     };
 
-
     return (
         <div>
             <Dialog
@@ -49,11 +47,10 @@ const MessagePopup: FC<MessageProps> = (props) => {
                 TransitionComponent={Transition}
                 keepMounted
                 onClose={handleClose}
-
             >
                 <DialogTitle>Input incorrect!</DialogTitle>
                 <DialogContent>
-                    {props.errors.map(item =>
+                    {props.messages.map(item =>
                         <DialogContentText key={item}>{item}</DialogContentText>)}
                 </DialogContent>
                 <DialogActions>
