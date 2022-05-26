@@ -52,14 +52,17 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
     const { userEmail, userPassword, userFirstName, userLastName } = req.body;
 
     try {
+        console.log('req.body:', req.body);
         body('userEmail').isEmail().normalizeEmail();
         body('userPassword').isLength({ min: 6 });
         const errors: Result<ValidationError> = validationResult(req);
+        console.log('errors:', errors);
         if (!errors.isEmpty()) {
             res.status(400).json({ message: `Invalid registration data: ${errors}` });
         }
 
-        const foundUser: IUser | null = await User.findOne({ userEmail });
+        const foundUser: IUser | null = await User.findOne<IUser>({ userEmail });
+        console.log('foundUser:', foundUser);
         if (foundUser) {
             res.status(400).json({ message: 'User with this Email is already registered!' });
             return;

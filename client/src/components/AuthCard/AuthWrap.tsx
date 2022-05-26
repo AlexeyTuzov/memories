@@ -4,6 +4,7 @@ import { IUser } from '../../../../server/src/models/user';
 import { useDispatch } from 'react-redux';
 import validateForm from './ValidateForm';
 import MessageManager from '../Message/MessageManager';
+import signUpSend from './SignUpSend';
 
 export enum userInputs {
     userEmail = 'userEmail',
@@ -34,10 +35,15 @@ const AuthWrap: FC = () => {
         setIsSignIn((prevSignState) => !prevSignState);
     }
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const errorsArray: string[] = validateForm({...userData, confirmPassword}, isSignIn);
         setValidationErrors(errorsArray);
+        if (isSignIn) {
+
+        } else {
+            await signUpSend(userData);
+        }
     }
 
     const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
