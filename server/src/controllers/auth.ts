@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 import User from '../models/user';
 import { IUser } from '../models/user';
-import { body, ValidationError, validationResult, Result } from 'express-validator';
+import { ValidationError, validationResult, Result } from 'express-validator';
 import { compare, hash } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import config from 'config';
+import errorMessageGenerator from '../utilites/errorMessageGenerator';
 
 export interface AuthInfo {
     userID: string;
@@ -15,11 +16,10 @@ export const logIn = async (req: Request, res: Response): Promise<void> => {
     const { userEmail, userPassword } = req.body;
 
     try {
-        body('userEmail').isEmail().normalizeEmail();
-        body('userPasword').isLength({ min: 6 });
         const errors: Result<ValidationError> = validationResult(req);
         if (!errors.isEmpty()) {
-            res.status(400).json({ message: `Invalid login data: ${errors}` });
+            const errorText: string[] = errorMessageGenerator(errors.array({ onlyFirstError: false }));
+            res.status(400).json({ message: errorText });
             return;
         }
 
@@ -52,30 +52,24 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
     const { userEmail, userPassword, userFirstName, userLastName } = req.body;
 
     try {
-        console.log('req.body:', req.body);
-        body('userEmail').isEmail().normalizeEmail();
-        body('userPassword').isLength({ min: 6 });
         const errors: Result<ValidationError> = validationResult(req);
-        console.log('errors:', errors);
         if (!errors.isEmpty()) {
-            res.status(400).json({ message: `Invalid registration data: ${errors}` });
-        }
-
-        const foundUser: IUser | null = await User.findOne<IUser>({ userEmail });
-        console.log('foundUser:', foundUser);
-        if (foundUser) {
-            res.status(400).json({ message: 'User with this Email is already registered!' });
+            const errorsArray: string[] = errorMessageGenerator(errors.array({ onlyFirstError: false }));
+            res.status(400).json(errorsArray);
             return;
         }
 
-        const encryptedPassword = hash(userPassword, 10);
-
+        const foundUser: IUser | null = await User.findOne<IUser>({ userEmail });
+        if (foundUser) {
+            res.status(400).json(['User with this Email is already registered!']);
+            return;
+        }
+        const encryptedPassword = await hash(userPassword, 10);
         const newUser = new User({ userEmail, userPassword: encryptedPassword, userFirstName, userLastName });
         await newUser.save();
 
-        res.json({ message: 'User successfully created!' });
-    }
-    catch (err: any) {
-        res.status(500).json({ message: `Server error: ${err}` });
+        res.status(201).json(['User successfully created!']);
+    } catch (err: any) {
+        res.status(500).json([`Server error: ${err}`]);
     }
 }

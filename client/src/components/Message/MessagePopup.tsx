@@ -48,7 +48,7 @@ const MessagePopup: FC<MessageProps> = (props) => {
                 keepMounted
                 onClose={handleClose}
             >
-                <DialogTitle>Input incorrect!</DialogTitle>
+                <DialogTitle>Authentication</DialogTitle>
                 <DialogContent>
                     {props.messages.map(item =>
                         <DialogContentText key={item}>{item}</DialogContentText>)}
