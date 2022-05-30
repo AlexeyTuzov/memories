@@ -4,11 +4,14 @@ import thunk from 'redux-thunk';
 import posts from './reducers/posts';
 import currentID from './reducers/currentID';
 import auth from './reducers/auth';
+import serverMessages from './reducers/serverMessages';
+
 
 const reducers = combineReducers({
     posts,
     currentID,
-    auth
+    auth,
+    serverMessages
 })
 
 const store = configureStore({

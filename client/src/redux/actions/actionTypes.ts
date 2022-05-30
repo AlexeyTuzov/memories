@@ -5,8 +5,8 @@ enum actionTypes {
     UPDATE_POST = 'UPDATE POST',
     DELETE_POST = 'DELETE_POST',
     LOG_IN = 'LOG_IN',
-    SIGN_UP = 'SIGN_UP',
-    LOG_OUT = 'LOG_OUT'
+    LOG_OUT = 'LOG_OUT',
+    SERVER_MESSAGE = 'SERVER_MESSAGE'
 }
 
 export default actionTypes;

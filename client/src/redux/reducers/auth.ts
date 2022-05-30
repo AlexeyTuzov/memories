@@ -19,7 +19,7 @@ const defaultState: AuthorizedUser = {
     isAuthenticated: false
 }
 
-export default (auth: AuthorizedUser = defaultState, action: AuthAction) => {
+export default (auth: AuthorizedUser = defaultState, action: AuthAction): AuthorizedUser => {
     switch (action.type) {
         case actionTypes.LOG_IN:
             auth.userID = action.payload.userID;

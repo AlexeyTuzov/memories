@@ -1,10 +1,12 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState } from 'react';
 import AuthCard from './AuthCard';
 import { IUser } from '../../../../server/src/models/user';
 import { useDispatch } from 'react-redux';
 import validateForm from './ValidateForm';
 import MessageManager from '../Message/MessageManager';
 import signUpSend from './SignUpSend';
+import { logIn } from '../../redux/actions/authActions';
+import { useAppSelector } from '../../redux/redux-hooks';
 
 export enum userInputs {
     userEmail = 'userEmail',
@@ -17,6 +19,7 @@ export enum userInputs {
 const AuthWrap: FC = () => {
 
     const dispatch = useDispatch();
+    const serverSideMessages: string[] = useAppSelector( state => state.serverMessages);
 
     const blankUser: IUser = {
         userEmail: '',
@@ -28,8 +31,6 @@ const AuthWrap: FC = () => {
     const [userData, setUserData] = useState<IUser>(blankUser);
     const [confirmPassword, setConfirmPassword] = useState<string>('');
     const [validationErrors, setValidationErrors] = useState<string[]>([]);
-    const [serverSideMessages, setServerSideMessages] = useState<string[]>([]);
-
     const [isSignIn, setIsSignIn] = useState<boolean>(false);
 
     const switchSignMode = () => {
@@ -42,10 +43,9 @@ const AuthWrap: FC = () => {
         setValidationErrors(errorsArray);
         if (errorsArray.length > 0) return;
         if (isSignIn) {
-
+            dispatch(logIn(userData.userEmail, userData.userPassword));
         } else {
-           const { serverMessages, isRedirectToSignIn } = await signUpSend(userData);
-           setServerSideMessages(serverMessages);
+           const { isRedirectToSignIn } = await signUpSend(userData);
            setIsSignIn(isRedirectToSignIn);
         }
     }
