@@ -12,6 +12,12 @@ export interface AuthInfo {
     userToken: string;
 }
 
+export interface LoginServerResponse {
+    message?: string[];
+    credentials?: AuthInfo;
+}
+const loginResponse: LoginServerResponse = {};
+
 export const logIn = async (req: Request, res: Response): Promise<void> => {
     const { userEmail, userPassword } = req.body;
 
@@ -19,19 +25,19 @@ export const logIn = async (req: Request, res: Response): Promise<void> => {
         const errors: Result<ValidationError> = validationResult(req);
         if (!errors.isEmpty()) {
             const errorText: string[] = errorMessageGenerator(errors.array({ onlyFirstError: false }));
-            res.status(400).json({ message: errorText });
+            res.status(400).json(loginResponse.message = errorText);
             return;
         }
 
         const foundUser: IUser | null = await User.findOne({ userEmail });
         if (!foundUser) {
-            res.status(400).json({ message: 'User with this Email is not registered yet!' });
+            res.status(400).json(loginResponse.message = ['User with this Email is not registered yet!']);
             return;
         }
 
         const passwordMatch: boolean = await compare(userPassword, foundUser.userPassword);
         if (!passwordMatch) {
-            res.status(400).json({ message: 'Wrong password!' });
+            res.status(400).json(loginResponse.message = ['Wrong password!']);
             return;
         }
 
@@ -41,10 +47,10 @@ export const logIn = async (req: Request, res: Response): Promise<void> => {
             { expiresIn: '1d' }
         );
 
-        res.json({ userID: foundUser._id, userToken: token });
+        res.json(loginResponse.credentials = { userID: foundUser._id, userToken: token });
 
     } catch (err: any) {
-        res.status(500).json({ message: `Server error: ${err}` });
+        res.status(500).json(loginResponse.message = [`Server error: ${err}`]);
     }
 }
 
@@ -55,21 +61,21 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
         const errors: Result<ValidationError> = validationResult(req);
         if (!errors.isEmpty()) {
             const errorsArray: string[] = errorMessageGenerator(errors.array({ onlyFirstError: false }));
-            res.status(400).json(errorsArray);
+            res.status(400).json(loginResponse.message = errorsArray);
             return;
         }
 
         const foundUser: IUser | null = await User.findOne<IUser>({ userEmail });
         if (foundUser) {
-            res.status(400).json(['User with this Email is already registered!']);
+            res.status(400).json(loginResponse.message = ['User with this Email is already registered!']);
             return;
         }
         const encryptedPassword = await hash(userPassword, 10);
         const newUser = new User({ userEmail, userPassword: encryptedPassword, userFirstName, userLastName });
         await newUser.save();
 
-        res.status(201).json(['User successfully created!']);
+        res.status(201).json(loginResponse.message = ['User successfully created!']);
     } catch (err: any) {
-        res.status(500).json([`Server error: ${err}`]);
+        res.status(500).json(loginResponse.message = [`Server error: ${err}`]);
     }
 }

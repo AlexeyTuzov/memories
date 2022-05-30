@@ -7,8 +7,9 @@ const signUpSend = async (userData: IUser): Promise<string[]> => {
 
     try {
         await api.signUp(userEmail, userPassword, userFirstName, userLastName);
-        return ['User successfully signed up!'];
+        return ['User successfuly signed up!'];
     } catch (err: any) {
+        console.log(err.response.data);
         return [...err.response.data];
     }
 }
