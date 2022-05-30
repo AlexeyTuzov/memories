@@ -28,13 +28,9 @@ const AuthWrap: FC = () => {
     const [userData, setUserData] = useState<IUser>(blankUser);
     const [confirmPassword, setConfirmPassword] = useState<string>('');
     const [validationErrors, setValidationErrors] = useState<string[]>([]);
-    const [serverSideErrors, setServerSideErrors] = useState<string[]>([]);
+    const [serverSideMessages, setServerSideMessages] = useState<string[]>([]);
 
     const [isSignIn, setIsSignIn] = useState<boolean>(false);
-
-    useEffect( () => {
-        console.log('serverSideErrors:', serverSideErrors);
-    }, [serverSideErrors]);
 
     const switchSignMode = () => {
         setIsSignIn((prevSignState) => !prevSignState);
@@ -48,9 +44,9 @@ const AuthWrap: FC = () => {
         if (isSignIn) {
 
         } else {
-           const feedback: string[] = await signUpSend(userData);
-           setServerSideErrors(feedback);
-           setIsSignIn(true);
+           const { serverMessages, isRedirectToSignIn } = await signUpSend(userData);
+           setServerSideMessages(serverMessages);
+           setIsSignIn(isRedirectToSignIn);
         }
     }
 
@@ -67,7 +63,7 @@ const AuthWrap: FC = () => {
     return (
         <>
             <MessageManager messages={validationErrors} />
-            <MessageManager messages={serverSideErrors} />
+            <MessageManager messages={serverSideMessages} />
             <AuthCard
                 handleSubmit={handleSubmit}
                 handleInput={handleInput}

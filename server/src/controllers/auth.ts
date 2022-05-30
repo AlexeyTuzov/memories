@@ -5,7 +5,7 @@ import { ValidationError, validationResult, Result } from 'express-validator';
 import { compare, hash } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import config from 'config';
-import errorMessageGenerator from '../utilites/errorMessageGenerator';
+import serverMessageGenerator from '../utilites/serverMessageGenerator';
 
 export interface AuthInfo {
     userID: string;
@@ -16,7 +16,7 @@ export interface LoginServerResponse {
     message?: string[];
     credentials?: AuthInfo;
 }
-const loginResponse: LoginServerResponse = {};
+const authResponse: LoginServerResponse = {};
 
 export const logIn = async (req: Request, res: Response): Promise<void> => {
     const { userEmail, userPassword } = req.body;
@@ -24,20 +24,20 @@ export const logIn = async (req: Request, res: Response): Promise<void> => {
     try {
         const errors: Result<ValidationError> = validationResult(req);
         if (!errors.isEmpty()) {
-            const errorText: string[] = errorMessageGenerator(errors.array({ onlyFirstError: false }));
-            res.status(400).json(loginResponse.message = errorText);
+            const errorText: string[] = serverMessageGenerator(errors.array({ onlyFirstError: false }));
+            res.status(400).json(authResponse.message = errorText);
             return;
         }
 
         const foundUser: IUser | null = await User.findOne({ userEmail });
         if (!foundUser) {
-            res.status(400).json(loginResponse.message = ['User with this Email is not registered yet!']);
+            res.status(400).json(authResponse.message = ['User with this Email is not registered yet!']);
             return;
         }
 
         const passwordMatch: boolean = await compare(userPassword, foundUser.userPassword);
         if (!passwordMatch) {
-            res.status(400).json(loginResponse.message = ['Wrong password!']);
+            res.status(400).json(authResponse.message = ['Wrong password!']);
             return;
         }
 
@@ -47,10 +47,10 @@ export const logIn = async (req: Request, res: Response): Promise<void> => {
             { expiresIn: '1d' }
         );
 
-        res.json(loginResponse.credentials = { userID: foundUser._id, userToken: token });
+        res.json(authResponse.credentials = { userID: foundUser._id, userToken: token });
 
     } catch (err: any) {
-        res.status(500).json(loginResponse.message = [`Server error: ${err}`]);
+        res.status(500).json(authResponse.message = [`Server error: ${err}`]);
     }
 }
 
@@ -60,22 +60,22 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
     try {
         const errors: Result<ValidationError> = validationResult(req);
         if (!errors.isEmpty()) {
-            const errorsArray: string[] = errorMessageGenerator(errors.array({ onlyFirstError: false }));
-            res.status(400).json(loginResponse.message = errorsArray);
+            const errorsArray: string[] = serverMessageGenerator(errors.array({ onlyFirstError: false }));
+            res.status(400).json(authResponse.message = errorsArray);
             return;
         }
 
         const foundUser: IUser | null = await User.findOne<IUser>({ userEmail });
         if (foundUser) {
-            res.status(400).json(loginResponse.message = ['User with this Email is already registered!']);
+            res.status(400).json(authResponse.message = ['User with this Email is already registered!']);
             return;
         }
         const encryptedPassword = await hash(userPassword, 10);
         const newUser = new User({ userEmail, userPassword: encryptedPassword, userFirstName, userLastName });
         await newUser.save();
 
-        res.status(201).json(loginResponse.message = ['User successfully created!']);
+        res.status(201).json(authResponse.message = ['User successfully created!']);
     } catch (err: any) {
-        res.status(500).json(loginResponse.message = [`Server error: ${err}`]);
+        res.status(500).json(authResponse.message = [`Server error: ${err}`]);
     }
 }

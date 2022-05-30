@@ -11,8 +11,8 @@ enum ErrorCases {
     location: 'body'
  */
 
-const errorMessageGenerator = (errors: ValidationError[]): string[] => {
-    return errors.map( error => `${error.msg} of ${ErrorCases[error.param]}`);
+const serverMessageGenerator = (errors: ValidationError[]): string[] => {
+    return errors.map(error => `${error.msg} of ${ErrorCases[error.param as keyof typeof ErrorCases]}`);
 }
 
-export default errorMessageGenerator;
+export default serverMessageGenerator;
