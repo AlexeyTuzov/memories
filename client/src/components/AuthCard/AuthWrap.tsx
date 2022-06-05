@@ -4,9 +4,10 @@ import { IUser } from '../../../../server/src/models/user';
 import { useDispatch } from 'react-redux';
 import validateForm from './ValidateForm';
 import MessageManager from '../Message/MessageManager';
-import signUpSend from './SignUpSend';
+import SignUpSend from './SignUpSend';
 import { logIn } from '../../redux/actions/authActions';
 import { useAppSelector } from '../../redux/redux-hooks';
+import { updateServerMessages } from '../../redux/actions/serverMessages';
 
 export enum userInputs {
     userEmail = 'userEmail',
@@ -45,7 +46,8 @@ const AuthWrap: FC = () => {
         if (isSignIn) {
             dispatch(logIn(userData.userEmail, userData.userPassword));
         } else {
-           const { isRedirectToSignIn } = await signUpSend(userData);
+           const { isRedirectToSignIn, serverMessage } = await SignUpSend(userData);
+           dispatch(updateServerMessages(serverMessage));
            setIsSignIn(isRedirectToSignIn);
         }
     }

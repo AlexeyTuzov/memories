@@ -25,7 +25,7 @@ export default (auth: AuthorizedUser = defaultState, action: AuthAction): Author
             auth.userID = action.payload.userID;
             auth.userToken = action.payload.userToken;
             auth.isAuthenticated = true;
-            return auth;
+            return {...auth};
         case actionTypes.LOG_OUT:
             return defaultState;
         default:

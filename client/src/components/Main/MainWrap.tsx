@@ -28,12 +28,13 @@ const MainWrap: FC = () => {
 
 
     useEffect(() => {
+        console.log('isAuthenticated:', auth.isAuthenticated);
         if (auth.isAuthenticated) {
             navigate('/');
         } else {
             navigate('/auth');
         }
-    }, []);
+    }, [auth.isAuthenticated]);
 
 
     return (

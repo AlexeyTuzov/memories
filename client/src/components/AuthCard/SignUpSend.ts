@@ -1,31 +1,29 @@
 import * as api from "../../api";
 import { IUser } from "../../../../server/src/models/user";
 import { LoginServerResponse } from '../../../../server/src/controllers/auth';
-import { useDispatch } from 'react-redux';
-import { updateServerMessages } from '../../redux/actions/serverMessages';
 
 interface SignUpResults {
     isRedirectToSignIn: boolean;
+    serverMessage: string[];
 }
 
-const signUpSend = async (userData: IUser): Promise<SignUpResults> => {
+const SignUpSend = async (userData: IUser): Promise<SignUpResults> => {
 
     const { userFirstName, userLastName, userEmail, userPassword } = userData;
-    const dispatch = useDispatch();
 
     try {
         await api.signUp(userEmail, userPassword, userFirstName, userLastName);
-        dispatch(updateServerMessages(['User successfully signed up!']));
         return {
-            isRedirectToSignIn: true
+            isRedirectToSignIn: true,
+            serverMessage: ['User successfully signeg up!']
         };
     } catch (err: any) {
         const res: LoginServerResponse = err.response.data;
-        dispatch(updateServerMessages(res.message!));
         return {
-            isRedirectToSignIn: false
+            isRedirectToSignIn: false,
+            serverMessage: [...res.message!]
         };
     }
 }
 
-export default signUpSend;
+export default SignUpSend;
