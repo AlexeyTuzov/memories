@@ -13,5 +13,4 @@ export const logIn = (userEmail: string, userPassword: string) => async (dispatc
         const res: string[] = err.response.data;
         dispatch(updateServerMessages(res || []));
     }
-
 }

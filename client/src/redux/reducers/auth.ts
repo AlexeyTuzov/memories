@@ -27,7 +27,10 @@ export default (auth: AuthorizedUser = defaultState, action: AuthAction): Author
             auth.isAuthenticated = true;
             return {...auth};
         case actionTypes.LOG_OUT:
-            return defaultState;
+            auth.userID = '';
+            auth.userToken = '';
+            auth.isAuthenticated = false;
+            return {...auth};
         default:
             return auth;
     }
